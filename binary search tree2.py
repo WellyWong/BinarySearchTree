@@ -191,6 +191,31 @@ class Tree:
             r_height = self.height(node.right)
 
             return max(l_height, r_height) + 1
+       
+    def print_vertical(self):
+        stack = []
+        margin_stack = []
+        stack.append(self.root)
+        margin_stack.append((0, '_'))
+        while len(stack) > 0:
+            node = stack.pop()
+            margin, l_or_r_child = margin_stack.pop()
+            for i in range(margin):
+                print("     ", end='')
+            if margin > 0:
+                print(l_or_r_child + "---", end='')
+            else:
+                print('Root:', end='')
+
+            if node != None:
+                if node.left != None or node.right != None:
+                    stack.append(node.right)
+                    margin_stack.append((margin+1, 'R'))
+                    stack.append(node.left)
+                    margin_stack.append((margin+1, 'L'))
+                print(node)
+            else:
+                print("[]")
 
 
 def inorder_iterative(root):
@@ -219,28 +244,14 @@ tree.insert(4)
 tree.insert(0)
 tree.insert(8)
 tree.insert(2)
-#tree.insert(4)
-print(tree.get_root())
-tree.print('inorder')
-tree.print('postorder')
-tree.print('preorder')
-print(tree.find(9))
-print(tree.find(2))
-print(tree.find(0))
-print(tree.find(8))
-print(tree.find_iterative(9))
-print(tree.find_iterative(2))
-print(tree.find_iterative(0))
-print(tree.find_iterative(8))
-inorder_iterative(tree.get_root())
-print("\nMin val in the tree: ", tree.min(tree.get_root()))
-print("Max val in the tree: ", tree.max(tree.get_root()))
-node4 = tree.find(4)
-print(tree.successor(node4))
-print(tree.predecessor(node4))
-node8 = tree.find(8)
-print(tree.successor(node8))
-print(tree.predecessor(node8))
-print("Height = ", tree.height(tree.get_root()))
-tree.delete(3)
-tree.print('postorder')
+tree.print_vertical()
+"""
+Output:
+Root:3
+     L---1
+          L---0
+          R---2
+     R---4
+          L---[]
+          R---8
+"""
